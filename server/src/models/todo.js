@@ -5,6 +5,11 @@ const todoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  done: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 export default mongoose.model("todos", todoSchema);

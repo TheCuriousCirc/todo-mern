@@ -1,13 +1,208 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --primary-font: "Inter";
+  --yellow: #fcbf49;
+  --dark-blue: #003049;
+  --orange: #f77f00;
+  --off-white: #eae2b7;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html {
+  box-sizing: border-box;
 }
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+*:focus {
+  outline: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.body {
+  width: 30vw;
+}
+
+.header-title {
+  font-family: var(--primary-font);
+  font-weight: bold;
+  font-size: 48px;
+  text-transform: uppercase;
+  color: var(--dark-blue);
+}
+
+.form-container {
+  display: flex;
+}
+
+.form-input {
+  font-family: var(--primary-font);
+  font-size: 16px;
+  flex: 0.8;
+  padding: 12px 20px;
+  margin-right: 10px;
+  background-color: #fff;
+  border: 0;
+  border-radius: 8px;
+  box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.form-button {
+  font-family: var(--primary-font);
+  font-weight: 500;
+  flex: 0.2;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  background-color: var(--yellow);
+  cursor: pointer;
+}
+
+.todo-container {
+  margin: 24px 0px;
+  border-radius: 10px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: rgb(252, 191, 73, 0.1);
+  margin: 4px 0;
+}
+
+.todo-item:hover {
+  background-color: rgb(252, 191, 73, 0.2);
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background-color: rgb(252, 191, 73, 0.1);
+  margin: 4px 0;
+}
+
+.todo-text {
+  font-family: var(--primary-font);
+  margin-left: 8px;
+  cursor: default;
+}
+
+.button-container {
+  display: flex;
+}
+
+.todo-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  border: 0;
+  border-radius: 8px;
+}
+
+.todo-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.delete-button {
+  background-color: #fef2f2;
+}
+.delete-button:hover {
+  background-color: #fee2e2;
+}
+
+.completed__button {
+  background-color: rgba(252, 191, 73, 0.05);
+  border: 0;
+  padding: 0px 20px;
+  border-radius: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.completed__button--text {
+  font-family: var(--primary-font);
+  font-weight: 500;
+  color: var(--yellow);
+  font-size: 14px;
+}
+
+.completed__button--icon {
+  font-family: var(--primary-font);
+  font-weight: 500;
+  color: var(--yellow);
+  width: 16px;
+  height: 16px;
+}
+
+/* checkbox */
+.hidden-checkbox {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clippath: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+.checkbox {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 100px;
+  transition: all 150ms;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.checkbox-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.hovered-check-icon {
+  width: 12px;
+  height: 12px;
+  color: gray;
+}
+.check-icon {
+  width: 12px;
+  height: 12px;
+  color: #fff;
+}
+/*  */

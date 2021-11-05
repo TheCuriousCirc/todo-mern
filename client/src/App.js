@@ -1,87 +1,114 @@
-import { useEffect, useState } from "react";
-import "./App.css";
+import React, { useEffect, useState } from "react";
 import Form from "./components/Form";
 import Todos from "./components/Todos";
-import axios from "axios";
-
-const todoApiUrl = "http://localhost:4000/api/todo";
-
-const getTodos = () => {
-  return axios.get(todoApiUrl);
-};
+import { addTodo, deleteTodo, getTodos, updateTodo } from "./services";
+import { GoChevronDown, GoChevronRight } from "react-icons/go";
 
 function App() {
   const [text, setText] = useState("");
   const [todos, setTodos] = useState([]);
   const [currentTodo, setCurrentTodo] = useState(null);
-
-  const addTodo = async (event) => {
-    event.preventDefault();
-    const _todos = [...todos];
-
-    const { data } = await axios.post(todoApiUrl, { title: text });
-
-    console.log(data);
-
-    _todos.push(data);
-
-    setTodos(_todos);
-    setText("");
-  };
-
-  const updateTodo = async (event) => {
-    event.preventDefault();
-
-    const _todos = [...todos];
-    const todoIdx = _todos.findIndex((todo) => todo._id === currentTodo._id);
-    _todos[todoIdx].title = text;
-
-    await axios.put(`${todoApiUrl}/${currentTodo._id}`, { title: text });
-
-    setTodos(_todos);
-    setCurrentTodo(null);
-    setText("");
-  };
-
-  const deleteTodo = async (id) => {
-    const _todos = [...todos];
-    await axios.delete(`${todoApiUrl}/${id}`);
-    const filtered = _todos.filter((todo) => todo._id !== id);
-    setTodos(filtered);
-  };
-
-  useEffect(() => {
-    if (currentTodo) {
-      setText(currentTodo.title);
-    }
-  }, [currentTodo]);
-
-  useEffect(() => {
-    (async () => {
-      const { data } = await getTodos();
-      setTodos(data);
-    })();
-  }, []);
+  const [showCompleted, setShowCompleted] = useState(true);
 
   const editMode = !!currentTodo;
 
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      if (!editMode) {
+        const { data: todo } = await addTodo({ title: text });
+        setTodos((curTodos) => [...curTodos, todo]);
+        setText("");
+      } else {
+        const { data: todo } = await updateTodo(currentTodo._id, {
+          title: text,
+        });
+        setTodos((curTodos) =>
+          curTodos.map((curTodo) =>
+            curTodo._id === todo._id ? { ...todo } : curTodo
+          )
+        );
+        setCurrentTodo(null);
+        setText("");
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const _deleteTodo = async (id) => {
+    const { data: todo } = await deleteTodo(id);
+    setTodos((curTodos) =>
+      curTodos.filter((curTodo) => curTodo._id !== todo._id)
+    );
+  };
+
+  const toggleDoneTodo = async (_todo) => {
+    const { data: todo } = await updateTodo(_todo._id, { done: _todo.done });
+    setTodos((curTodos) =>
+      curTodos.map((curTodo) =>
+        curTodo._id === todo._id ? { ...todo } : curTodo
+      )
+    );
+  };
+
+  useEffect(() => {
+    getTodos().then(({ data }) => setTodos(data));
+  }, []);
+
   return (
     <div className="container">
-      <p>Todo Application</p>
-      <p>{`Edit mode: ${editMode}`}</p>
-      <Form
-        text={text}
-        setText={setText}
-        addTodo={addTodo}
-        updateTodo={updateTodo}
-        editMode={editMode}
-      />
-      <Todos
-        todos={todos}
-        deleteTodo={deleteTodo}
-        setCurrentTodo={setCurrentTodo}
-        currentTodo={currentTodo}
-      />
+      <div>
+        <p className="header-title">The Curious Circ Todos</p>
+      </div>
+      <div className="body">
+        <Form
+          text={text}
+          setText={setText}
+          onSubmit={onSubmit}
+          editMode={editMode}
+        />
+        <Todos
+          todos={todos.filter((todo) => !todo.done)}
+          setText={setText}
+          currentTodo={currentTodo}
+          setCurrentTodo={setCurrentTodo}
+          deleteTodo={_deleteTodo}
+          toggleDoneTodo={toggleDoneTodo}
+        />
+        <div>
+          <button
+            onClick={() => setShowCompleted(!showCompleted)}
+            type="button"
+            className="completed__button"
+          >
+            {showCompleted ? (
+              <GoChevronDown className="completed__button--icon" />
+            ) : (
+              <GoChevronRight className="completed__button--icon" />
+            )}
+            <p
+              className="completed__button--text"
+              style={{ margin: "0px 5px" }}
+            >
+              Completed
+            </p>
+            <p className="completed__button--text">
+              {todos.filter((todo) => todo.done).length}
+            </p>
+          </button>
+          {showCompleted && (
+            <Todos
+              todos={todos.filter((todo) => todo.done)}
+              setText={setText}
+              currentTodo={currentTodo}
+              setCurrentTodo={setCurrentTodo}
+              deleteTodo={_deleteTodo}
+              toggleDoneTodo={toggleDoneTodo}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 }

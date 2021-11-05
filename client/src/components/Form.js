@@ -1,17 +1,21 @@
 import React from "react";
 
-const Form = ({ text, setText, addTodo, updateTodo, editMode }) => {
+const Form = ({ text, setText, onSubmit, editMode }) => {
   return (
-    <div className="form-container">
-      <form onSubmit={editMode ? updateTodo : addTodo}>
+    <form onSubmit={onSubmit}>
+      <div className="form-container">
         <input
+          className="form-input"
           type="text"
           value={text}
+          placeholder="Create a new todo.."
           onChange={(e) => setText(e.target.value)}
         />
-        <button type="submit">{editMode ? "Update Todo" : "Add Todo"}</button>
-      </form>
-    </div>
+        <button className="form-button" type="submit">
+          {editMode ? "Update Todo" : "Add Todo"}
+        </button>
+      </div>
+    </form>
   );
 };
 

@@ -1,7 +1,14 @@
 import React from "react";
 import Todo from "./Todo";
 
-const Todos = ({ todos, deleteTodo, currentTodo, setCurrentTodo }) => {
+const Todos = ({
+  todos,
+  setText,
+  deleteTodo,
+  currentTodo,
+  toggleDoneTodo,
+  setCurrentTodo,
+}) => {
   return (
     <div className="todo-container">
       {todos.map((todo) => {
@@ -10,7 +17,9 @@ const Todos = ({ todos, deleteTodo, currentTodo, setCurrentTodo }) => {
           <Todo
             key={todo._id}
             todo={todo}
+            setText={setText}
             deleteTodo={deleteTodo}
+            toggleDoneTodo={toggleDoneTodo}
             setCurrentTodo={setCurrentTodo}
           />
         );

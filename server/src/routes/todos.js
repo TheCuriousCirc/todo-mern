@@ -32,7 +32,13 @@ router.delete("/:id", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const todo = await Todo.findOneAndUpdate({ _id: req.params.id }, req.body);
+    const todo = await Todo.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: req.body },
+      {
+        new: true,
+      }
+    );
     res.status(200).send(todo);
   } catch (error) {
     res.status(500).send(error);
